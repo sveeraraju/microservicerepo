@@ -1,0 +1,35 @@
+name:wdc workflow
+ 
+on push
+on:
+  workflow_dispatch:
+  inputs:
+  deploy_environment:
+     decription:Environment to deployment
+      required:true
+      type:choice
+      default:dev
+      options:
+       -Dev
+       -QA
+       -Uat
+       -Xat
+       -PROD
+
+run-name:${{github.event.inputs.deploy_environment}}
+jobs:
+pre_check:
+    name:pre check
+    runs-on:ubuntu
+    environment:run-name
+    steps:
+     name:check the environment
+     run:echo "selected deployment env ${ run-name}"
+component-init:
+ needs:pre_check
+ name:init
+ runs-on: ubuntu-latest
+ environmant:dev
+ steps:
+  -name: init-variables
+   run:echo "initialize the variables ${date}"
