@@ -32,7 +32,7 @@ jobs:
        environment: dev
        steps:
           - name: init-variables
-            run: echo "initialize the variables ${date}"
+            run: echo "initialize the variables Date ${date +"%Y-%m-%d %H:%M:%S")"
    deploy_component1:
        needs: component1_initialize
        name: Deploy Component 1
