@@ -24,7 +24,7 @@ jobs:
        steps:
           - name: check the environment
             id: precheck1
-            run: echo "selected deployment env ${ run-name}"
+            run: echo "selected deployment env  ${{github.event.inputs.deploy_environment}}"
    component1_initialize:
        needs: pre_check
        name: init
