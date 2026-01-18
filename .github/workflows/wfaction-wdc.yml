@@ -25,7 +25,7 @@ jobs:
           - name: check the environment
             id: precheck1
             run: echo "selected deployment env ${ run-name}"
-   component-init:
+   component1_initialize:
        needs: pre_check
        name: init
        runs-on: ubuntu-latest
@@ -33,3 +33,43 @@ jobs:
        steps:
           - name: init-variables
             run: echo "initialize the variables ${date}"
+   deploy_component1:
+       needs: component1_initialize
+       name: Deploy Component 1
+       runs-on: ubuntu-latest
+       environment: ${{ inputs.deploy_environment }}
+       steps:
+         - name: deploy
+           run: echo "deploying component1"
+   component2_initialize:
+    needs: pre_check
+    name: Initialize component 2
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.deploy_environment }}
+    steps:
+      - name: init
+        run: echo "initialization running"
+        ## add additional code here
+
+   deploy_component2:
+     needs: component2_initialize
+     name: Deploy Component 2
+     runs-on: ubuntu-latest
+     environment: ${{ inputs.deploy_environment }}
+     steps:
+       - name: deploy
+         run: echo "deploying component2"
+        ## add additional code here
+
+   post_deploy_checks:
+     # include any post deployment checks here
+     # nicely formatted email notifications can be setup to detail the execution of individual jobs
+     # github job status variables can be used for this purpose
+     if: ${{ always() }}
+     needs: [pre_check, component1_initialize, deploy_component1, component2_initialize, deploy_component2]
+     name: Post Checks
+     runs-on: ubuntu-latest
+     steps:
+       - name: Send Notification
+         run: echo "sending email"
+        ## add additional code here
